@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { omittedKeys } from './omittedKeys'
 import { capitalizeFirstLetters } from '../../../utils/capitalizeFirstLetters'
 import { fetchExercises } from './apiCalls'
-import type { Exercise } from './ExerciseType'
+import type { Exercise } from '@server/src/models/Exercise'
 import ExerciseModal from './ExerciseModal'
 import {
   Table,
@@ -31,25 +31,23 @@ function ExerciseTable() {
 
   if (error) return <p>Error: {error.message}</p>
   if (isFetching)
-    return <p className='text-zinc-300 font-thin'>Refreshing...</p>
+    return <p className="text-zinc-300 font-thin">Refreshing...</p>
 
   return (
     <>
       <Table
         striped={true}
         bleed
-        className='[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)] px-10 pt-3'
+        className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)] px-10 pt-3"
       >
         <TableHead>
           <TableRow>
-            {exercises.length > 0 &&
+            {exercises &&
+              exercises.length > 0 &&
               Object.keys(exercises[0]).map((key: string) => {
                 if (!omittedKeys.includes(key)) {
                   return (
-                    <TableHeader
-                      key={key}
-                      className='font-bold'
-                    >
+                    <TableHeader key={key} className="font-bold">
                       {capitalizeFirstLetters(key)}
                     </TableHeader>
                   )
@@ -70,7 +68,7 @@ function ExerciseTable() {
                     if (!omittedKeys.includes(key)) {
                       return (
                         <TableCell
-                          className='text-zinc-300 font-thin'
+                          className="text-zinc-300 font-thin"
                           key={value.toString()}
                         >
                           {Array.isArray(value)

@@ -1,5 +1,7 @@
+import { api } from '@lib/api'
+
 export async function fetchExercises() {
-  const res = await fetch('/api/exercises')
+  const res = await api.exercises.$get()
 
   if (!res.ok) {
     throw new Error('Failed to fetch exercises')

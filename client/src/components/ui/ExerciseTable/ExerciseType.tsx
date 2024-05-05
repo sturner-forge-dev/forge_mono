@@ -6,5 +6,5 @@ export type Exercise = {
   equipment: string
   primaryMuscleGroup: Array<string>
   type: Array<string>
-  variations: Array<string>
+  variations: Array<string> | undefined
 }

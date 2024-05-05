@@ -18,28 +18,27 @@ type modalProps = {
 function ExerciseModal({ isOpen, setIsOpen, exercise }: modalProps) {
   return (
     <>
-      <Dialog
-        open={isOpen}
-        onClose={setIsOpen}
-      >
+      <Dialog open={isOpen} onClose={setIsOpen}>
         <DialogTitle>{exercise.name}</DialogTitle>
-        <DialogDescription className='mt-1'>
+        <DialogDescription className="mt-1">
           {exercise.description}
         </DialogDescription>
-        <DialogBody>
-          <Field>
-            <Label>Variations</Label>
-            <DialogBody className='text-zinc-500 mt-1 text-pretty'>
-              <div>
-                {exercise.variations.map((variation) => (
-                  <div key={variation}>
-                    <p className='text-pretty'>{variation}</p>
-                  </div>
-                ))}
-              </div>
-            </DialogBody>
-          </Field>
-        </DialogBody>
+        {exercise.variations && exercise.variations.length > 0 && (
+          <DialogBody>
+            <Field>
+              <Label>Variations</Label>
+              <DialogBody className="text-zinc-500 mt-1 text-pretty">
+                <div>
+                  {exercise.variations.map((variation) => (
+                    <div key={variation}>
+                      <p className="text-pretty">{variation}</p>
+                    </div>
+                  ))}
+                </div>
+              </DialogBody>
+            </Field>
+          </DialogBody>
+        )}
         <DialogActions>
           <Button onClick={() => setIsOpen(false)}>Close</Button>
         </DialogActions>
