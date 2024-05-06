@@ -7,9 +7,10 @@ const app = new Hono()
 
 app.use('*', logger())
 
-app
+const apiRoutes = app
   .basePath('/api')
   .route('/exercises', exerciseRouter)
   .route('/users', userRouter)
 
 export default app
+export type ApiRoutes = typeof apiRoutes
