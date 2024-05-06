@@ -13,7 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as ProfileImport } from './routes/profile'
 import { Route as ExercisesImport } from './routes/exercises'
-import { Route as AboutImport } from './routes/about'
+import { Route as CreateImport } from './routes/create'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -28,8 +28,8 @@ const ExercisesRoute = ExercisesImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AboutRoute = AboutImport.update({
-  path: '/about',
+const CreateRoute = CreateImport.update({
+  path: '/create',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,8 +46,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      preLoaderRoute: typeof AboutImport
+    '/create': {
+      preLoaderRoute: typeof CreateImport
       parentRoute: typeof rootRoute
     }
     '/exercises': {
@@ -65,7 +65,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
-  AboutRoute,
+  CreateRoute,
   ExercisesRoute,
   ProfileRoute,
 ])

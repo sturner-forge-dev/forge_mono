@@ -1,5 +1,5 @@
 import type { Context } from 'hono'
-import type { Exercise } from '../models/Exercise'
+import { type Exercise } from '../models/Exercise'
 import exampleExercises from '../dev/data/exampleExercises'
 
 export const getAllExercises = async (c: Context) => {

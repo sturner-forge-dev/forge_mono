@@ -11,7 +11,7 @@ import {
 
 export const exerciseRouter = new Hono()
   .get('/', getAllExercises)
-  .get('/:id{[0-9]+}', getExerciseById)
+  .get('/:id', getExerciseById)
   .post(
     '/',
     zValidator('json', exerciseSchema.omit({ id: true })),

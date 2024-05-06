@@ -1,13 +1,13 @@
-import { Button } from '../catalyst/button'
+import { Button } from '@catalyst/button'
 import {
   Dialog,
   DialogActions,
   DialogBody,
   DialogDescription,
   DialogTitle
-} from '../catalyst/dialog'
-import { Field, Label } from '../catalyst/fieldset'
-import { Exercise } from './ExerciseType'
+} from '@catalyst/dialog'
+import { Field, Label } from '@catalyst/fieldset'
+import { type Exercise } from '@server/src/models/Exercise'
 
 type modalProps = {
   isOpen: boolean

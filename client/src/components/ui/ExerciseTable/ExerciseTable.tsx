@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
+import { capitalizeFirstLetters } from '@/utils/capitalizeFirstLetters'
 import { omittedKeys } from './omittedKeys'
-import { capitalizeFirstLetters } from '../../../utils/capitalizeFirstLetters'
 import { fetchExercises } from './apiCalls'
-import type { Exercise } from '@server/src/models/Exercise'
+import { type Exercise } from '@server/src/models/Exercise'
 import ExerciseModal from './ExerciseModal'
 import {
   Table,
@@ -13,7 +13,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '../catalyst/table'
+} from '@catalyst/table'
 
 function ExerciseTable() {
   const [exercise, setExercise] = useState({} as Exercise)
@@ -34,11 +34,11 @@ function ExerciseTable() {
     return <p className="text-zinc-300 font-thin">Refreshing...</p>
 
   return (
-    <>
+    <div className="flex flex-col place-content-center">
       <Table
         striped={true}
         bleed
-        className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)] px-10 pt-3"
+        className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)] px-10 pt-3 w-full" // Added w-full to make the table take up the full width of the screen
       >
         <TableHead>
           <TableRow>
@@ -91,7 +91,7 @@ function ExerciseTable() {
           exercise={exercise}
         />
       )}
-    </>
+    </div>
   )
 }
 
