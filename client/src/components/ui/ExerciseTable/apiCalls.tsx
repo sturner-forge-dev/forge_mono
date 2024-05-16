@@ -44,14 +44,13 @@ export async function fetchExerciseById(id: string) {
  *
  * @returns {any}
  */
-
 export async function createExercise(exercise: Exercise) {
   const res = await api.exercises.$post({
-    body: exercise
+    json: exercise
   })
 
   if (!res.ok) {
-    throw new Error('Failed to create exercise')
+    throw new Error(`HTTP error: ${res.status}`)
   }
 
   const data = (await res.json()) as { exercise: Exercise }

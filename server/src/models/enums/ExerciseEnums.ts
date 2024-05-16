@@ -28,7 +28,17 @@ export enum MuscleGroup {
   TRICEPS = 'triceps',
   LEGS = 'legs',
   ABS = 'abs',
-  CARDIO = 'cardio'
+  GLUTES = 'glutes',
+  CALVES = 'calves',
+  FOREARMS = 'forearms',
+  TRAPS = 'traps',
+  NECK = 'neck',
+  ADDUCTORS = 'adductors',
+  ABDUCTORS = 'abductors',
+  OBLIQUES = 'obliques',
+  LOWER_BACK = 'lower back',
+  UPPER_BACK = 'upper back',
+  QUADS = 'quads'
 }
 
 export enum Equipment {

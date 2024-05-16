@@ -18,11 +18,21 @@ export const getExerciseById = async (c: Context) => {
 }
 
 export const createExercise = async (c: Context) => {
-  const exercise = await c.req.valid('json' as never)
-  exampleExercises.push({
-    ...(exercise as Exercise),
-    id: exampleExercises.length + 1
-  })
+  console.log('Context:', c)
+  const exercise = await c.req.json()
+
+  const newExercise: Exercise = {
+    id: exampleExercises.length + 1,
+    name: exercise.name,
+    description: exercise.description,
+    difficulty: exercise.difficulty,
+    equipment: exercise.equipment,
+    primaryMuscleGroup: exercise.primaryMuscleGroup,
+    type: exercise.type,
+    isCustom: exercise.isCustom
+  }
+
+  exampleExercises.push(newExercise)
 
   c.status(201)
   return c.json({ exercise })

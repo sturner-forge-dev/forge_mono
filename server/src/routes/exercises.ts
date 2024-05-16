@@ -10,11 +10,11 @@ import {
 } from '../controllers/exercisesController'
 
 export const exerciseRouter = new Hono()
-  .get('/', getAllExercises)
-  .get('/:id', getExerciseById)
   .post(
     '/',
     zValidator('json', exerciseSchema.omit({ id: true })),
     createExercise
   )
+  .get('/', getAllExercises)
+  .get('/:id', getExerciseById)
   .delete('/:id{[0-9]+}', deleteExerciseById)

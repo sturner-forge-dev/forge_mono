@@ -1,8 +1,9 @@
+// CustomMultiSelect.tsx
+
 import { useState } from 'react'
-import FieldInfo from './FieldInfo'
 import { Field, Label } from '@catalyst/fieldset'
 import { Listbox, Transition } from '@headlessui/react'
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline'
+import { ChevronUpDownIcon, CheckIcon } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
 
 import { capitalizeFirstLetters } from '@/utils/capitalizeFirstLetters'
@@ -12,24 +13,34 @@ interface Option {
   name: string
 }
 
-interface SelectProps {
+interface MultiSelectProps {
   field: any
   name: string
   options: Option[]
-  selectedOption: string
-  onChange: (selectedOption: string) => void
+  selectedOptions: string[]
+  onChange: (selectedOptions: string[]) => void
 }
 
-export default function FieldSelect({
+export default function CustomMultiSelect({
   field,
   name,
   options,
-  selectedOption,
+  selectedOptions,
   onChange
-}: SelectProps) {
+}: MultiSelectProps) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const isSelected = (option: string) => selectedOption === option
+  const toggleOption = (option: string) => {
+    const isSelected = selectedOptions.find((o) => o === option)
+    const updatedSelected = isSelected
+      ? selectedOptions.filter((o) => o !== option)
+      : [...selectedOptions, option]
+
+    onChange(updatedSelected)
+  }
+
+  const isSelected = (option: string) =>
+    selectedOptions.some((o) => o === option)
 
   return (
     <div className="relative">
@@ -46,6 +57,9 @@ export default function FieldSelect({
 
               // Horizontal padding
               'pl-[calc(theme(spacing[3.5])-1px)] pr-[calc(theme(spacing.10)-1px)] sm:pl-[calc(theme(spacing.3)-1px)] sm:pr-[calc(theme(spacing.9)-1px)]',
+
+              // Options (multi-select)
+              '[&_optgroup]:font-semibold',
 
               // Typography
               'text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white dark:*:text-white',
@@ -67,9 +81,11 @@ export default function FieldSelect({
             ])}
           >
             <span className="block truncate">
-              {selectedOption
-                ? capitalizeFirstLetters(selectedOption)
-                : 'Select an option'}
+              {selectedOptions.length > 0
+                ? selectedOptions
+                    .map((o) => capitalizeFirstLetters(o))
+                    .join(', ')
+                : 'Select items'}
             </span>
             <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
               <ChevronUpDownIcon
@@ -90,48 +106,46 @@ export default function FieldSelect({
             className="absolute z-20 w-full bg-transparent dark:bg-white/5 dark:*:bg-zinc-800 shadow-lg max-h-full"
           >
             <Listbox.Options className="block border rounded-md border-zinc-500 text-sm leading-3 bg-transparent dark:bg-white/5 dark:*:bg-white/5">
-              {options.map((option) => {
-                return (
-                  <Listbox.Option
-                    key={option.id}
-                    value={option}
-                    onClick={() => onChange(option.name)}
-                    className={({ active }) =>
-                      `relative cursor-pointer select-none py-2 pl-10 pr-4 font-thin hover:bg-blue-500 ${
-                        active ? 'bg-blue-500 text-white' : 'text-white'
-                      }`
-                    }
-                  >
-                    {({ selected }) => (
-                      <>
+              {options.map((option) => (
+                <Listbox.Option
+                  key={option.id}
+                  value={option}
+                  onClick={() => toggleOption(option.name)}
+                  className={({ active }) =>
+                    `relative cursor-pointer select-none py-2 pl-10 pr-4 font-thin hover:bg-blue-500 ${
+                      active ? 'bg-blue-500 text-white' : 'text-white'
+                    }`
+                  }
+                >
+                  {({ selected }) => (
+                    <>
+                      <span
+                        className={`block truncate ${
+                          isSelected(option.name) ? 'font-medium' : 'font-thin'
+                        }`}
+                      >
+                        {capitalizeFirstLetters(option.name)}
+                      </span>
+                      {isSelected(option.name) && (
                         <span
-                          className={`block truncate ${
-                            isSelected(option.name)
-                              ? 'font-medium'
-                              : 'font-thin'
+                          className={`absolute inset-y-0 left-0 items-start pl-3 ${
+                            selected ? 'text-white' : 'text-blue-600'
                           }`}
                         >
-                          {option
-                            ? capitalizeFirstLetters(option.name)
-                            : 'Select an option'}
+                          <CheckIcon
+                            className="h-5 w-5 text-blue-600 mt-1.5"
+                            aria-hidden="true"
+                          />
                         </span>
-                        {isSelected(option.name) && (
-                          <span
-                            className={`absolute inset-y-0 left-0 items-start pl-3 ${
-                              selected ? 'text-white' : 'text-blue-600'
-                            }`}
-                          ></span>
-                        )}
-                      </>
-                    )}
-                  </Listbox.Option>
-                )
-              })}
+                      )}
+                    </>
+                  )}
+                </Listbox.Option>
+              ))}
             </Listbox.Options>
           </Transition>
         </Listbox>
       </Field>
-      <FieldInfo field={field} />
     </div>
   )
 }

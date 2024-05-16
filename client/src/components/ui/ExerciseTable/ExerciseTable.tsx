@@ -61,7 +61,7 @@ function ExerciseTable() {
             ? '...'
             : exercises.map((exercise: Exercise) => (
                 <TableRow
-                  key={exercise.name}
+                  key={exercise.id}
                   onClick={() => [setIsOpen(true), setExercise(exercise)]}
                 >
                   {Object.entries(exercise).map(([key, value]) => {
@@ -72,8 +72,8 @@ function ExerciseTable() {
                           key={value.toString()}
                         >
                           {Array.isArray(value)
-                            ? value.join(', ')
-                            : String(value)}
+                            ? capitalizeFirstLetters(value.join(', '))
+                            : capitalizeFirstLetters(String(value))}
                         </TableCell>
                       )
                     }

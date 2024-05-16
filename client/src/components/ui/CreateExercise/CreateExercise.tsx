@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { useForm } from '@tanstack/react-form'
 import { Field, Fieldset, Label, Legend } from '@catalyst/fieldset'
 import { Text } from '@catalyst/text'
 import { Textarea } from '@catalyst/textarea'
 import { Button } from '@catalyst/button'
+import { useNavigate } from '@tanstack/react-router'
 
 import { createExercise } from '../ExerciseTable/apiCalls'
 
@@ -15,20 +17,74 @@ import {
 import FieldInput from './FieldInput'
 import FieldSelect from './FieldSelect'
 import FieldInfo from './FieldInfo'
+import FieldMultiSelect from './FieldMultiSelect'
+
+type ExerciseOption = {
+  id?: number
+  name: string
+  description: string
+  difficulty: Difficulty
+  image?: string | null
+  equipment: Array<Equipment>
+  primaryMuscleGroup: Array<MuscleGroup>
+  secondaryMuscleGroup?: Array<MuscleGroup>
+  type: Array<Type>
+  variations?: Array<string>
+  isCustom?: boolean
+}
+
+const convertEnumToOptions = (enumObject: Object) => {
+  return Object.values(enumObject).map((value, index) => {
+    return { id: index, name: value as string }
+  })
+}
+
+const muscleGroupOptions = convertEnumToOptions(MuscleGroup)
+const exerciseTypeOptions = convertEnumToOptions(Type)
+const exerciseDifficultyOptions = convertEnumToOptions(Difficulty)
+const exerciseEquipmentOptions = convertEnumToOptions(Equipment)
 
 function CreateExercise() {
+  const [primaryMuscleGroup, setPrimaryMuscleGroup] = useState<
+    ExerciseOption['primaryMuscleGroup']
+  >([])
+  const [secondaryMuscleGroup, setSecondaryMuscleGroup] = useState<
+    ExerciseOption['secondaryMuscleGroup']
+  >([])
+  const [exerciseType, setExerciseType] = useState<ExerciseOption['type']>([])
+  const [exerciseDifficulty, setExerciseDifficulty] = useState<
+    ExerciseOption['difficulty']
+  >(Difficulty.EASY)
+  const [exerciseEquipment, setExerciseEquipment] = useState<
+    ExerciseOption['equipment']
+  >([])
+
+  const navigate = useNavigate()
+
   const form = useForm({
     defaultValues: {
       name: '',
-      difficulty: '',
-      equipment: '',
-      type: '',
-      primary_muscle_group: '',
-      secondary_muscle_group: '',
+      difficulty: exerciseDifficulty,
+      equipment: exerciseEquipment,
+      type: exerciseType,
+      primaryMuscleGroup: primaryMuscleGroup,
+      secondaryMuscleGroup: secondaryMuscleGroup,
       description: ''
     },
     onSubmit: async ({ value }) => {
-      console.log(value)
+      const payload = {
+        ...value,
+        primaryMuscleGroup: primaryMuscleGroup,
+        secondaryMuscleGroup: secondaryMuscleGroup,
+        type: exerciseType,
+        difficulty: exerciseDifficulty,
+        equipment: exerciseEquipment,
+        isCustom: true
+      }
+
+      createExercise(payload).then(() => {
+        navigate({ to: '/exercises' })
+      })
     }
   })
 
@@ -57,15 +113,19 @@ function CreateExercise() {
               />
             </div>
 
-            <div className="w-full mr-2">
+            <div className="w-full">
               <form.Field
-                name="secondary_muscle_group"
+                name="secondaryMuscleGroup"
                 children={(field) => {
                   return (
-                    <FieldSelect
+                    <FieldMultiSelect
                       field={field}
-                      name="Secondary Muscle Group"
-                      options={Object.values(MuscleGroup)}
+                      name="Equipment"
+                      options={exerciseEquipmentOptions}
+                      selectedOptions={exerciseEquipment as any}
+                      onChange={(selected) => {
+                        setExerciseEquipment(selected as Equipment[])
+                      }}
                     />
                   )
                 }}
@@ -74,15 +134,19 @@ function CreateExercise() {
           </div>
 
           <div className="flex flex-row justify-center min-w-max mt-3">
-            <div className="w-full mr-2">
+            <div className="w-full">
               <form.Field
                 name="type"
                 children={(field) => {
                   return (
-                    <FieldSelect
+                    <FieldMultiSelect
                       field={field}
                       name="Exercise Type"
-                      options={Object.values(Type)}
+                      options={exerciseTypeOptions}
+                      selectedOptions={exerciseType as any}
+                      onChange={(selected) => {
+                        setExerciseType(selected as Type[])
+                      }}
                     />
                   )
                 }}
@@ -97,7 +161,11 @@ function CreateExercise() {
                     <FieldSelect
                       field={field}
                       name="Exercise Difficulty"
-                      options={Object.values(Difficulty)}
+                      options={exerciseDifficultyOptions}
+                      selectedOption={exerciseDifficulty as any}
+                      onChange={(selected) => {
+                        setExerciseDifficulty(selected as Difficulty)
+                      }}
                     />
                   )
                 }}
@@ -106,30 +174,38 @@ function CreateExercise() {
           </div>
 
           <div className="flex flex-row justify-center min-w-max mt-3">
-            <div className="w-full mr-2">
+            <div className="w-full pl-2">
               <form.Field
-                name="equipment"
+                name="primaryMuscleGroup"
                 children={(field) => {
                   return (
-                    <FieldSelect
+                    <FieldMultiSelect
                       field={field}
-                      name="Exercise Equipment"
-                      options={Object.values(Equipment)}
+                      name="Primary Muscle Group"
+                      options={muscleGroupOptions}
+                      selectedOptions={primaryMuscleGroup as any}
+                      onChange={(selected) => {
+                        setPrimaryMuscleGroup(selected as MuscleGroup[])
+                      }}
                     />
                   )
                 }}
               />
             </div>
 
-            <div className="w-full pl-2">
+            <div className="w-full">
               <form.Field
-                name="primary_muscle_group"
+                name="secondaryMuscleGroup"
                 children={(field) => {
                   return (
-                    <FieldSelect
+                    <FieldMultiSelect
                       field={field}
-                      name="Primary Muscle Group"
-                      options={Object.values(MuscleGroup)}
+                      name="Secondary Muscle Group"
+                      options={muscleGroupOptions}
+                      selectedOptions={secondaryMuscleGroup as any}
+                      onChange={(selected) => {
+                        setSecondaryMuscleGroup(selected as MuscleGroup[])
+                      }}
                     />
                   )
                 }}
