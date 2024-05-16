@@ -226,7 +226,9 @@ function CreateExercise() {
                         name={field.name}
                         value={field.state.value}
                         onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
+                        onChange={(e: any) =>
+                          field.handleChange(e.target.value)
+                        }
                       />
                       <FieldInfo field={field} />
                     </Field>
