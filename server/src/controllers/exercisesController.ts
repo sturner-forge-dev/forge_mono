@@ -18,7 +18,6 @@ export const getExerciseById = async (c: Context) => {
 }
 
 export const createExercise = async (c: Context) => {
-  console.log('Context:', c)
   const exercise = await c.req.json()
 
   const newExercise: Exercise = {

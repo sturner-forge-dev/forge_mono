@@ -24,9 +24,9 @@ export async function fetchExercises() {
  *
  * @returns Exercise
  */
-export async function fetchExerciseById(id: string) {
+export async function fetchExerciseById(id: number) {
   const res = await api.exercises[':id'].$get({
-    param: { id }
+    param: { id: id.toString() }
   })
 
   if (!res.ok) {

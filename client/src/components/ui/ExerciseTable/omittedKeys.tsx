@@ -3,5 +3,6 @@ export const omittedKeys = [
   'description',
   'variations',
   'equipment',
-  'secondaryMuscleGroup'
+  'secondaryMuscleGroup',
+  'isCustom'
 ]
