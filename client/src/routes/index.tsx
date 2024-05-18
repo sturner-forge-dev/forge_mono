@@ -5,5 +5,5 @@ export const Route = createFileRoute('/')({
 })
 
 function Index() {
-  return <div className='p-2 text-zinc-300'>Hello from Home!</div>
+  return <div className="p-2 text-zinc-300">Hello from Home!</div>
 }

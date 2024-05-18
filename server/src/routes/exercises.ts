@@ -8,13 +8,15 @@ import {
   createExercise,
   deleteExerciseById
 } from '../controllers/exercisesController'
+import { getUser } from '../../kinde'
 
 export const exerciseRouter = new Hono()
   .post(
     '/',
     zValidator('json', exerciseSchema.omit({ id: true })),
+    getUser,
     createExercise
   )
-  .get('/', getAllExercises)
-  .get('/:id', getExerciseById)
-  .delete('/:id{[0-9]+}', deleteExerciseById)
+  .get('/', getUser, getAllExercises)
+  .get('/:id', getUser, getExerciseById)
+  .delete('/:id{[0-9]+}', getUser, deleteExerciseById)

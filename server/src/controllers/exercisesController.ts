@@ -3,10 +3,18 @@ import { type Exercise } from '../models/Exercise'
 import exampleExercises from '../dev/data/exampleExercises'
 
 export const getAllExercises = async (c: Context) => {
+  const user = c.var.user
+
+  console.log(user)
+
   return c.json({ exercises: exampleExercises })
 }
 
 export const getExerciseById = async (c: Context) => {
+  const user = c.var.user
+
+  console.log(user)
+
   const id = Number.parseInt(c.req.param('id'))
   const exercise = await exampleExercises.find((e) => e.id === id)
 
@@ -18,6 +26,10 @@ export const getExerciseById = async (c: Context) => {
 }
 
 export const createExercise = async (c: Context) => {
+  const user = c.var.user
+
+  console.log(user)
+
   const exercise = await c.req.json()
 
   const newExercise: Exercise = {
@@ -38,6 +50,10 @@ export const createExercise = async (c: Context) => {
 }
 
 export const deleteExerciseById = async (c: Context) => {
+  const user = c.var.user
+
+  console.log(user)
+
   const id = Number.parseInt(c.req.param('id'))
   const index = exampleExercises.findIndex((exercise) => exercise.id === id)
 

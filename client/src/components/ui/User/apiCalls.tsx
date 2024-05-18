@@ -77,3 +77,14 @@ export async function patchUserById(id: number, user: User) {
   const data = (await res.json()) as { user: User }
   return data.user
 }
+
+export async function getCurrentUser() {
+  const res = await api.me.$get()
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch current user')
+  }
+
+  const data = await res.json()
+  return data
+}

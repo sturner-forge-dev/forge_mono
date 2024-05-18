@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
 import { capitalizeFirstLetters } from '@/utils/capitalizeFirstLetters'
@@ -16,6 +16,10 @@ import {
 } from '@catalyst/table'
 
 function ExerciseTable() {
+  useEffect(() => {
+    document.title = 'Forge Fitness | Exercises'
+  }, [])
+
   const [exercise, setExercise] = useState({} as Exercise)
   const [isOpen, setIsOpen] = useState(false)
 

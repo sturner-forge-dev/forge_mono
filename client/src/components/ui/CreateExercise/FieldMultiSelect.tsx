@@ -97,13 +97,12 @@ export default function CustomMultiSelect({
 
           <Transition
             show={isOpen}
-            enter="transition ease-out duration-100"
+            enter="transition ease-out duration-100 absolute z-20 w-full max-h-full bg-transparent dark:bg-white/5 dark:*:bg-zinc-800 shadow-lg"
             enterFrom="transform scale-95 opacity-0"
-            enterTo="transform scale-100 opacity-100"
-            leave="transition ease-in duration-75"
-            leaveFrom="transform scale-100 opacity-100"
+            enterTo="transform scale-100 opacity-100 absolute absolute z-20 w-full max-h-full bg-transparent dark:bg-white/5 dark:*:bg-zinc-800 shadow-lg"
+            leave="transition ease-in duration-75 absolute z-20 w-full max-h-full bg-transparent dark:bg-white/5 dark:*:bg-zinc-800 shadow-lg"
+            leaveFrom="transform scale-100 opacity-100 absolute z-20 w-full max-h-full bg-transparent dark:bg-white/5 dark:*:bg-zinc-800 shadow-lg"
             leaveTo="transform scale-95 opacity-0"
-            className="absolute z-20 w-full bg-transparent dark:bg-white/5 dark:*:bg-zinc-800 shadow-lg max-h-full"
           >
             <Listbox.Options className="block border rounded-md border-zinc-500 text-sm leading-3 bg-transparent dark:bg-white/5 dark:*:bg-white/5">
               {options.map((option) => (
