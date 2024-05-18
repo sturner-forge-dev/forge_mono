@@ -5,10 +5,16 @@ import { userSchema } from '../models/schemas/userSchema'
 import {
   getAllUsers,
   getUserById,
-  createUser
+  createUser,
+  updateUserById
 } from '../controllers/userController'
 
 export const userRouter = new Hono()
   .get('/', getAllUsers)
   .get('/:id{[0-9]+}', getUserById)
   .post('/', zValidator('json', userSchema.omit({ id: true })), createUser)
+  .patch(
+    '/:id{[0-9]+}',
+    zValidator('json', userSchema.omit({ id: true })),
+    updateUserById
+  )

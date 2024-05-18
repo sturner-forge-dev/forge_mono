@@ -39,8 +39,7 @@ const exampleExercises: Exercise[] = [
     difficulty: 'Medium',
     equipment: 'None',
     primaryMuscleGroup: ['Core'],
-    type: ['Strength'],
-    variations: ['Side plank', 'Reverse plank']
+    type: ['Strength']
   },
   {
     id: 5,

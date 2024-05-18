@@ -1,0 +1,22 @@
+{
+  "name": "apiv2",
+  "module": "server/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun index.ts",
+    "dev": "bun --watch server/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "prettier": "3.2.5"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.2.1",
+    "@kinde-oss/kinde-typescript-sdk": "^2.9.1",
+    "hono": "^4.3.2",
+    "zod": "^3.23.5"
+  }
+}

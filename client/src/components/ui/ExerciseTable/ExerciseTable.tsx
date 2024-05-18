@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
+import { capitalizeFirstLetters } from '@/utils/capitalizeFirstLetters'
 import { omittedKeys } from './omittedKeys'
-import { capitalizeFirstLetters } from '../../../utils/capitalizeFirstLetters'
 import { fetchExercises } from './apiCalls'
-import type { Exercise } from './ExerciseType'
+import { type Exercise } from '@server/src/models/Exercise'
 import ExerciseModal from './ExerciseModal'
 import {
   Table,
@@ -13,9 +13,13 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '../catalyst/table'
+} from '@catalyst/table'
 
 function ExerciseTable() {
+  useEffect(() => {
+    document.title = 'Forge Fitness | Exercises'
+  }, [])
+
   const [exercise, setExercise] = useState({} as Exercise)
   const [isOpen, setIsOpen] = useState(false)
 
@@ -31,25 +35,23 @@ function ExerciseTable() {
 
   if (error) return <p>Error: {error.message}</p>
   if (isFetching)
-    return <p className='text-zinc-300 font-thin'>Refreshing...</p>
+    return <p className="text-zinc-300 font-thin">Refreshing...</p>
 
   return (
-    <>
+    <div className="flex flex-col place-content-center">
       <Table
         striped={true}
         bleed
-        className='[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)] px-10 pt-3'
+        className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)] px-10 pt-3 w-full" // Added w-full to make the table take up the full width of the screen
       >
         <TableHead>
           <TableRow>
-            {exercises.length > 0 &&
+            {exercises &&
+              exercises.length > 0 &&
               Object.keys(exercises[0]).map((key: string) => {
                 if (!omittedKeys.includes(key)) {
                   return (
-                    <TableHeader
-                      key={key}
-                      className='font-bold'
-                    >
+                    <TableHeader key={key} className="font-bold">
                       {capitalizeFirstLetters(key)}
                     </TableHeader>
                   )
@@ -63,19 +65,19 @@ function ExerciseTable() {
             ? '...'
             : exercises.map((exercise: Exercise) => (
                 <TableRow
-                  key={exercise.name}
+                  key={exercise.id}
                   onClick={() => [setIsOpen(true), setExercise(exercise)]}
                 >
                   {Object.entries(exercise).map(([key, value]) => {
                     if (!omittedKeys.includes(key)) {
                       return (
                         <TableCell
-                          className='text-zinc-300 font-thin'
+                          className="text-zinc-300 font-thin"
                           key={value.toString()}
                         >
                           {Array.isArray(value)
-                            ? value.join(', ')
-                            : String(value)}
+                            ? capitalizeFirstLetters(value.join(', '))
+                            : capitalizeFirstLetters(String(value))}
                         </TableCell>
                       )
                     }
@@ -93,7 +95,7 @@ function ExerciseTable() {
           exercise={exercise}
         />
       )}
-    </>
+    </div>
   )
 }
 
