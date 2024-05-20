@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 // import { useForm } from '@tanstack/react-form'
 import { useQuery } from '@tanstack/react-query'
-import { getCurrentUser } from './apiCalls.js'
 import { userQueryOptions } from '@/lib/api.js'
 
 function Profile() {

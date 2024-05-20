@@ -13,7 +13,7 @@ export async function fetchUsers() {
     throw new Error('Failed to fetch users')
   }
 
-  const data: { users: User[] } = await res.json()
+  const data = await res.json()
   return data.users
 }
 
@@ -53,7 +53,7 @@ export async function createUser(user: User) {
     throw new Error(`HTTP error: ${res.status}`)
   }
 
-  const data = (await res.json()) as { user: User }
+  const data = await res.json()
   return data.user
 }
 

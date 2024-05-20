@@ -82,6 +82,8 @@ function CreateExercise() {
         isCustom: true
       }
 
+      console.log(payload)
+
       createExercise(payload).then(() => {
         navigate({ to: '/exercises' })
       })

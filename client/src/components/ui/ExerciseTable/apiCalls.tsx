@@ -13,7 +13,7 @@ export async function fetchExercises() {
     throw new Error('Failed to fetch exercises')
   }
 
-  const data: { exercises: Exercise[] } = await res.json()
+  const data = await res.json()
   return data.exercises
 }
 
@@ -53,6 +53,6 @@ export async function createExercise(exercise: Exercise) {
     throw new Error(`HTTP error: ${res.status}`)
   }
 
-  const data = (await res.json()) as { exercise: Exercise }
+  const data = await res.json()
   return data.exercise
 }

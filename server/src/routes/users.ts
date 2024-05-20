@@ -8,13 +8,20 @@ import {
   createUser,
   updateUserById
 } from '../controllers/userController'
+import { getUser } from '../../kinde'
 
 export const userRouter = new Hono()
-  .get('/', getAllUsers)
-  .get('/:id{[0-9]+}', getUserById)
-  .post('/', zValidator('json', userSchema.omit({ id: true })), createUser)
+  .get('/', getUser, getAllUsers)
+  .get('/:id{[0-9]+}', getUser, getUserById)
+  .post(
+    '/',
+    zValidator('json', userSchema.omit({ id: true })),
+    getUser,
+    createUser
+  )
   .patch(
     '/:id{[0-9]+}',
     zValidator('json', userSchema.omit({ id: true })),
+    getUser,
     updateUserById
   )

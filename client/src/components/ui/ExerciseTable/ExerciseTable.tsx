@@ -33,7 +33,8 @@ function ExerciseTable() {
     queryFn: fetchExercises
   })
 
-  if (error) return <p>Error: {error.message}</p>
+  if (error)
+    return <p className="text-zinc-300 font-thin">Error: {error.message}</p>
   if (isFetching)
     return <p className="text-zinc-300 font-thin">Refreshing...</p>
 

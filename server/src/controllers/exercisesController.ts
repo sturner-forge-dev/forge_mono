@@ -1,66 +1,97 @@
 import type { Context } from 'hono'
-import { type Exercise } from '../models/Exercise'
-import exampleExercises from '../dev/data/exampleExercises'
+import { db } from '../../db'
+import { exercises as exercisesTable } from '../../db/schema/exercises'
+import { eq } from 'drizzle-orm'
 
+/**
+ * Retrieves all exercises.
+ *
+ * @param {any} c:Context
+ *
+ * @returns {any}
+ */
 export const getAllExercises = async (c: Context) => {
   const user = c.var.user
-
   console.log(user)
 
-  return c.json({ exercises: exampleExercises })
+  const results = db.select().from(exercisesTable)
+
+  return c.json({ exercises: results })
 }
 
+/**
+ * Retrieves an exercise by its ID.
+ *
+ * @param {any} c:Context
+ *
+ * @returns {any}
+ */
 export const getExerciseById = async (c: Context) => {
   const user = c.var.user
-
   console.log(user)
 
-  const id = Number.parseInt(c.req.param('id'))
-  const exercise = await exampleExercises.find((e) => e.id === id)
+  const id = Number(c.req.param('id'))
+  const result = db
+    .select()
+    .from(exercisesTable)
+    .where(eq(exercisesTable.id, id))
 
-  if (!exercise) {
+  if (!result) {
     return c.notFound()
   }
 
-  return c.json({ exercise })
+  return c.json({ exercise: result })
 }
 
 export const createExercise = async (c: Context) => {
-  const user = c.var.user
+  try {
+    const user = c.var.user
+    console.log('User:', user)
+    const exercise = await c.req.json()
+    console.log('Received exercise:', exercise)
 
-  console.log(user)
+    // Insert the exercise into the database
+    const newExercise = await db
+      .insert(exercisesTable)
+      .values({
+        id: undefined,
+        name: exercise.name,
+        description: exercise.description,
+        image: undefined,
+        isCustom: exercise.isCustom
+      })
+      .returning()
 
-  const exercise = await c.req.json()
-
-  const newExercise: Exercise = {
-    id: exampleExercises.length + 1,
-    name: exercise.name,
-    description: exercise.description,
-    difficulty: exercise.difficulty,
-    equipment: exercise.equipment,
-    primaryMuscleGroup: exercise.primaryMuscleGroup,
-    type: exercise.type,
-    isCustom: exercise.isCustom
+    console.log('DB result:', newExercise)
+    c.status(201)
+    return c.json({ exercise: newExercise })
+  } catch (error) {
+    console.error('Error:', error)
+    c.status(500)
+    return c.json({ error: 'Internal Server Error' })
   }
-
-  exampleExercises.push(newExercise)
-
-  c.status(201)
-  return c.json({ exercise })
 }
 
+/**
+ * Deletes an exercise by its ID.
+ *
+ * @param {any} c:Context
+ *
+ * @returns {any}
+ */
 export const deleteExerciseById = async (c: Context) => {
   const user = c.var.user
-
   console.log(user)
 
-  const id = Number.parseInt(c.req.param('id'))
-  const index = exampleExercises.findIndex((exercise) => exercise.id === id)
+  const id = Number(c.req.param('id'))
+  const result = db
+    .delete(exercisesTable)
+    .where(eq(exercisesTable.id, id))
+    .returning()
 
-  if (index === -1) {
+  if (!result) {
     return c.notFound()
   }
 
-  const deletedExercise = exampleExercises.splice(index, 1)[0]
-  return c.json({ exercise: deletedExercise })
+  return c.json({ exercise: result })
 }

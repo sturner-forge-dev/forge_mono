@@ -1,6 +1,7 @@
 import type { Context } from 'hono'
-import type { User } from '../models/User'
-import exampleUsers from '../dev/data/exampleUsers'
+import { db } from '../../db'
+import { users as usersTable } from '../../db/schema/users'
+import { eq } from 'drizzle-orm'
 
 /**
  * Retrieves all users.
@@ -10,7 +11,12 @@ import exampleUsers from '../dev/data/exampleUsers'
  * @returns A Promise that resolves to the JSON response containing all users.
  */
 export const getAllUsers = async (c: Context) => {
-  return c.json({ users: exampleUsers })
+  const user = c.var.user
+  console.log(user)
+
+  const results = db.select().from(usersTable)
+
+  return c.json({ users: results })
 }
 
 /**
@@ -21,14 +27,17 @@ export const getAllUsers = async (c: Context) => {
  * @returns A Promise that resolves to the JSON response containing the user.
  */
 export const getUserById = async (c: Context) => {
-  const id = Number.parseInt(c.req.param('id'))
-  const user = await exampleUsers.find((e) => e.id === id)
+  const user = c.var.user
+  console.log(user)
 
-  if (!user) {
+  const id = Number.parseInt(c.req.param('id'))
+  const result = db.select().from(usersTable).where(eq(usersTable.id, id))
+
+  if (!result) {
     return c.notFound()
   }
 
-  return c.json({ user })
+  return c.json({ user: result })
 }
 
 /**
@@ -39,11 +48,14 @@ export const getUserById = async (c: Context) => {
  * @returns A Promise that resolves to the JSON response containing the created user.
  */
 export const createUser = async (c: Context) => {
-  const user = await c.req.valid('json' as never)
-  exampleUsers.push({ ...(user as User), id: exampleUsers.length + 1 })
+  const user = c.var.user
+  console.log(user)
+
+  const newUser = await c.req.json()
+  const result = db.insert(usersTable).values(newUser).returning()
 
   c.status(201)
-  return c.json({ user })
+  return c.json({ user: result })
 }
 
 /**
@@ -54,15 +66,21 @@ export const createUser = async (c: Context) => {
  * @returns A Promise that resolves to the JSON response containing the updated user.
  */
 export const updateUserById = async (c: Context) => {
+  const user = c.var.user
+  console.log(user)
+
   const id = Number.parseInt(c.req.param('id'))
-  const user = await c.req.json()
+  const userToUpdate = await c.req.json()
 
-  const index = exampleUsers.findIndex((u) => u.id === id)
+  const result = db
+    .update(usersTable)
+    .set(userToUpdate)
+    .where(eq(usersTable.id, id))
+    .returning()
 
-  if (index === -1) {
+  if (!result) {
     return c.notFound()
   }
 
-  exampleUsers[index] = { ...(user as User), id }
-  return c.json({ user: exampleUsers[index] })
+  return c.json({ user: result })
 }
