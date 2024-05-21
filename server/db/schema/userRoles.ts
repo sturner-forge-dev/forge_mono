@@ -11,9 +11,9 @@ export const userRoles = pgTable(
   },
   (userRoles) => {
     return {
-      idIndex: uniqueIndex('id_idx').on(userRoles.id),
-      userIdIndex: uniqueIndex('user_id_idx').on(userRoles.userId),
-      roleIdIndex: uniqueIndex('role_id_idx').on(userRoles.roleId)
+      idIndex: uniqueIndex('user_roles_id_idx').on(userRoles.id),
+      userIdIndex: uniqueIndex('user_roles_user_id_idx').on(userRoles.userId),
+      roleIdIndex: uniqueIndex('user_roles_role_id_idx').on(userRoles.roleId)
     }
   }
 )

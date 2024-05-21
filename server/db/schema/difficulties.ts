@@ -15,8 +15,8 @@ export const difficulties = pgTable(
   },
   (difficulties) => {
     return {
-      idIndex: uniqueIndex('id_idx').on(difficulties.id),
-      nameIndex: uniqueIndex('name_idx').on(difficulties.name)
+      idIndex: uniqueIndex('difficulties_id_idx').on(difficulties.id),
+      nameIndex: uniqueIndex('difficulties_name_idx').on(difficulties.name)
     }
   }
 )

@@ -14,10 +14,10 @@ export const exerciseEquipment = pgTable(
   },
   (exerciseEquipment) => {
     return {
-      exerciseIdIndex: uniqueIndex('exercise_id_idx').on(
+      exerciseIdIndex: uniqueIndex('exercise_equipment_id_idx').on(
         exerciseEquipment.exerciseId
       ),
-      equipmentIdIndex: uniqueIndex('equipment_id_idx').on(
+      equipmentIdIndex: uniqueIndex('exercise_equipment_equipment_id_idx').on(
         exerciseEquipment.equipmentId
       )
     }

@@ -14,7 +14,11 @@ export const getAllUsers = async (c: Context) => {
   const user = c.var.user
   console.log(user)
 
-  const results = db.select().from(usersTable)
+  const results = await db.select().from(usersTable)
+
+  if (!results) {
+    return c.notFound()
+  }
 
   return c.json({ users: results })
 }
@@ -31,7 +35,7 @@ export const getUserById = async (c: Context) => {
   console.log(user)
 
   const id = Number.parseInt(c.req.param('id'))
-  const result = db.select().from(usersTable).where(eq(usersTable.id, id))
+  const result = await db.select().from(usersTable).where(eq(usersTable.id, id))
 
   if (!result) {
     return c.notFound()
@@ -51,11 +55,16 @@ export const createUser = async (c: Context) => {
   const user = c.var.user
   console.log(user)
 
-  const newUser = await c.req.json()
-  const result = db.insert(usersTable).values(newUser).returning()
+  try {
+    const newUser = await c.req.json()
+    const result = await db.insert(usersTable).values(newUser).returning()
 
-  c.status(201)
-  return c.json({ user: result })
+    c.status(201)
+    return c.json({ user: result })
+  } catch (error) {
+    console.error(error)
+    return c.json({ error: 'Failed to create user' }, 500)
+  }
 }
 
 /**
@@ -69,18 +78,23 @@ export const updateUserById = async (c: Context) => {
   const user = c.var.user
   console.log(user)
 
-  const id = Number.parseInt(c.req.param('id'))
-  const userToUpdate = await c.req.json()
+  try {
+    const id = Number.parseInt(c.req.param('id'))
+    const userToUpdate = await c.req.json()
 
-  const result = db
-    .update(usersTable)
-    .set(userToUpdate)
-    .where(eq(usersTable.id, id))
-    .returning()
+    const result = await db
+      .update(usersTable)
+      .set(userToUpdate)
+      .where(eq(usersTable.id, id))
+      .returning()
 
-  if (!result) {
-    return c.notFound()
+    if (!result) {
+      return c.notFound()
+    }
+
+    return c.json({ user: result })
+  } catch (error) {
+    console.error(error)
+    return c.json({ error: 'Failed to update user' }, 500)
   }
-
-  return c.json({ user: result })
 }

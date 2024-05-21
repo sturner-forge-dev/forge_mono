@@ -15,8 +15,8 @@ export const exerciseTypes = pgTable(
   },
   (exerciseTypes) => {
     return {
-      idIndex: uniqueIndex('id_idx').on(exerciseTypes.id),
-      nameIndex: uniqueIndex('name_idx').on(exerciseTypes.name)
+      idIndex: uniqueIndex('exercise_types_id_idx').on(exerciseTypes.id),
+      nameIndex: uniqueIndex('exercise_types_name_idx').on(exerciseTypes.name)
     }
   }
 )

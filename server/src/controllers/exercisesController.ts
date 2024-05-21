@@ -1,4 +1,4 @@
-import type { Context } from 'hono'
+import { type Context } from 'hono'
 import { db } from '../../db'
 import { exercises as exercisesTable } from '../../db/schema/exercises'
 import { eq } from 'drizzle-orm'
@@ -11,10 +11,14 @@ import { eq } from 'drizzle-orm'
  * @returns {any}
  */
 export const getAllExercises = async (c: Context) => {
-  const user = c.var.user
-  console.log(user)
+  // const user = c.var.user
+  // console.log(user)
 
-  const results = db.select().from(exercisesTable)
+  const results = await db.select().from(exercisesTable)
+
+  if (!results) {
+    return c.notFound()
+  }
 
   return c.json({ exercises: results })
 }
@@ -31,7 +35,7 @@ export const getExerciseById = async (c: Context) => {
   console.log(user)
 
   const id = Number(c.req.param('id'))
-  const result = db
+  const result = await db
     .select()
     .from(exercisesTable)
     .where(eq(exercisesTable.id, id))
@@ -41,35 +45,6 @@ export const getExerciseById = async (c: Context) => {
   }
 
   return c.json({ exercise: result })
-}
-
-export const createExercise = async (c: Context) => {
-  try {
-    const user = c.var.user
-    console.log('User:', user)
-    const exercise = await c.req.json()
-    console.log('Received exercise:', exercise)
-
-    // Insert the exercise into the database
-    const newExercise = await db
-      .insert(exercisesTable)
-      .values({
-        id: undefined,
-        name: exercise.name,
-        description: exercise.description,
-        image: undefined,
-        isCustom: exercise.isCustom
-      })
-      .returning()
-
-    console.log('DB result:', newExercise)
-    c.status(201)
-    return c.json({ exercise: newExercise })
-  } catch (error) {
-    console.error('Error:', error)
-    c.status(500)
-    return c.json({ error: 'Internal Server Error' })
-  }
 }
 
 /**
@@ -84,7 +59,7 @@ export const deleteExerciseById = async (c: Context) => {
   console.log(user)
 
   const id = Number(c.req.param('id'))
-  const result = db
+  const result = await db
     .delete(exercisesTable)
     .where(eq(exercisesTable.id, id))
     .returning()

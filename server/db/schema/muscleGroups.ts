@@ -8,8 +8,8 @@ export const muscleGroups = pgTable(
   },
   (muscleGroups) => {
     return {
-      idIndex: uniqueIndex('id_idx').on(muscleGroups.id),
-      nameIndex: uniqueIndex('name_idx').on(muscleGroups.name)
+      idIndex: uniqueIndex('muscle_groups_id_idx').on(muscleGroups.id),
+      nameIndex: uniqueIndex('muscle_groups_name_idx').on(muscleGroups.name)
     }
   }
 )

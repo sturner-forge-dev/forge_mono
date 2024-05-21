@@ -8,8 +8,8 @@ export const equipment = pgTable(
   },
   (equipment) => {
     return {
-      idIndex: uniqueIndex('id_idx').on(equipment.id),
-      nameIndex: uniqueIndex('name_idx').on(equipment.name)
+      idIndex: uniqueIndex('equipment_id_idx').on(equipment.id),
+      nameIndex: uniqueIndex('equipment_name_idx').on(equipment.name)
     }
   }
 )

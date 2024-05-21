@@ -18,8 +18,8 @@ export const routines = pgTable(
   },
   (routines) => {
     return {
-      idIndex: uniqueIndex('id_idx').on(routines.id),
-      userIdIndex: uniqueIndex('user_id_idx').on(routines.userId)
+      idIndex: uniqueIndex('routines_id_idx').on(routines.id),
+      userIdIndex: uniqueIndex('routines_user_id_idx').on(routines.userId)
     }
   }
 )

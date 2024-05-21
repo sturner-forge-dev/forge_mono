@@ -19,15 +19,15 @@ export const routineExercises = pgTable(
   },
   (routineExercises) => {
     return {
-      routineIdIndex: uniqueIndex('routine_id_idx').on(
+      routineIdIndex: uniqueIndex('routine_exercises_routine_id_idx').on(
         routineExercises.routineId
       ),
-      exerciseIdIndex: uniqueIndex('exercise_id_idx').on(
+      exerciseIdIndex: uniqueIndex('routine_exercises_exercise_id_idx').on(
         routineExercises.exerciseId
       ),
-      customExerciseIdIndex: uniqueIndex('custom_exercise_id_idx').on(
-        routineExercises.customExerciseId
-      )
+      customExerciseIdIndex: uniqueIndex(
+        'routine_exercises_custom_exercise_id_idx'
+      ).on(routineExercises.customExerciseId)
     }
   }
 )

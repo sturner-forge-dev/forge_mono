@@ -13,9 +13,13 @@ export const routineLogs = pgTable(
   },
   (routineLogs) => {
     return {
-      idIndex: uniqueIndex('id_idx').on(routineLogs.id),
-      userIdIndex: uniqueIndex('user_id_idx').on(routineLogs.userId),
-      routineIdIndex: uniqueIndex('routine_id_idx').on(routineLogs.routineId)
+      idIndex: uniqueIndex('routine_logs_id_idx').on(routineLogs.id),
+      userIdIndex: uniqueIndex('routine_logs_user_id_idx').on(
+        routineLogs.userId
+      ),
+      routineIdIndex: uniqueIndex('routine_logs_routine_id_idx').on(
+        routineLogs.routineId
+      )
     }
   }
 )

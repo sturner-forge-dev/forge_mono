@@ -20,15 +20,15 @@ export const routineExerciseLogs = pgTable(
   },
   (routineExerciseLogs) => {
     return {
-      routineLogIdIndex: uniqueIndex('routine_log_id_idx').on(
-        routineExerciseLogs.routineLogId
-      ),
-      exerciseIdIndex: uniqueIndex('exercise_id_idx').on(
+      routineLogIdIndex: uniqueIndex(
+        'routine_exercise_logs_routine_log_id_idx'
+      ).on(routineExerciseLogs.routineLogId),
+      exerciseIdIndex: uniqueIndex('routine_exercise_logs_exercise_id_idx').on(
         routineExerciseLogs.exerciseId
       ),
-      customExerciseIdIndex: uniqueIndex('custom_exercise_id_idx').on(
-        routineExerciseLogs.customExerciseId
-      )
+      customExerciseIdIndex: uniqueIndex(
+        'routine_exercise_logs_custom_exercise_id_idx'
+      ).on(routineExerciseLogs.customExerciseId)
     }
   }
 )

@@ -20,9 +20,13 @@ export const customExercises = pgTable(
   },
   (customExercises) => {
     return {
-      idIndex: uniqueIndex('id_idx').on(customExercises.id),
-      nameIndex: uniqueIndex('name_idx').on(customExercises.name),
-      userIdIndex: uniqueIndex('user_id_idx').on(customExercises.userId)
+      idIndex: uniqueIndex('icustom_exercises_id_idx').on(customExercises.id),
+      nameIndex: uniqueIndex('icustom_exercises_name_idx').on(
+        customExercises.name
+      ),
+      userIdIndex: uniqueIndex('icustom_exercises_user_id_idx').on(
+        customExercises.userId
+      )
     }
   }
 )
