@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const routineExerciseSchema = z.object({
+export const routineExercises = z.object({
   id: z.number().int().positive().min(1),
   routineId: z.number().int().positive().min(1),
   exerciseId: z.number().int().positive().min(1).optional(),
@@ -9,4 +9,4 @@ export const routineExerciseSchema = z.object({
   reps: z.number().int().positive().min(1)
 })
 
-export type RoutineExercise = z.infer<typeof routineExerciseSchema>
+export type RoutineExercise = z.infer<typeof routineExercises>

@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 
-import { userSchema } from '../models/schemas/userSchema'
+import { userSchema } from '../models/schemas/user'
 import {
   getAllUsers,
   getUserById,

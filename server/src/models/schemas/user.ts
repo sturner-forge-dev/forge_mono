@@ -1,12 +1,12 @@
 import { z } from 'zod'
 
-export const userConfigurationSchema = z.object({
+export const userConfiguration = z.object({
   height: z.number().int().positive().min(1).optional(),
   weight: z.number().int().positive().min(1).optional(),
   goalWeight: z.number().int().positive().min(1).optional()
 })
 
-export const userSchema = z.object({
+export const user = z.object({
   id: z.number().int().positive().min(1),
   firstName: z.string().min(2).max(100).optional(),
   lastName: z.string().min(2).max(100).optional(),
@@ -21,8 +21,8 @@ export const userSchema = z.object({
   passwordChangedAt: z.string().transform((val) => new Date(val)),
   active: z.boolean().optional().default(true),
   avatar: z.string().optional(),
-  configuration: userConfigurationSchema.optional()
+  configuration: userConfiguration.optional()
 })
 
-export type UserConfiguration = z.infer<typeof userConfigurationSchema>
-export type User = z.infer<typeof userSchema>
+export type UserConfiguration = z.infer<typeof userConfiguration>
+export type User = z.infer<typeof user>

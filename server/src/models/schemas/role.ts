@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
-export const difficultySchema = z.object({
+export const role = z.object({
   id: z.number().int().positive().min(1),
   name: z.string().min(3).max(100),
   description: z.string().optional()
 })
 
-export type Difficulty = z.infer<typeof difficultySchema>
+export type Role = z.infer<typeof role>

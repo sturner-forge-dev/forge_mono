@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const routineSchema = z.object({
+export const routine = z.object({
   id: z.number().int().positive().min(1),
   userId: z.number().int().positive().min(1),
   name: z.string().min(3).max(100),
@@ -8,4 +8,4 @@ export const routineSchema = z.object({
   createdAt: z.string().transform((val) => new Date(val))
 })
 
-export type Routine = z.infer<typeof routineSchema>
+export type Routine = z.infer<typeof routine>

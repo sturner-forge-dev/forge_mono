@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const customExerciseSchema = z.object({
+export const customExercise = z.object({
   id: z.number().int().positive().min(1),
   userId: z.number().int().positive().min(1),
   name: z.string().min(3).max(100),
@@ -9,4 +9,4 @@ export const customExerciseSchema = z.object({
   isCustom: z.boolean().default(true)
 })
 
-export type CustomExercise = z.infer<typeof customExerciseSchema>
+export type CustomExercise = z.infer<typeof customExercise>

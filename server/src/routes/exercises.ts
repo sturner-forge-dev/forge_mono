@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 
-import { exerciseSchema } from '../models/schemas/exerciseSchema'
+import { exerciseSchema } from '../models/schemas/exercise'
 import {
   getAllExercises,
   getExerciseById,
